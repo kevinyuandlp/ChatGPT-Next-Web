@@ -1,18 +1,13 @@
-import { useState, useEffect, useMemo, HTMLProps } from "react";
-
+mport { useState, useEffect, useMemo, HTMLProps } from "react";
 import EmojiPicker, { Theme as EmojiTheme } from "emoji-picker-react";
-
 import styles from "./settings.module.scss";
-
 import ResetIcon from "../icons/reload.svg";
 import CloseIcon from "../icons/close.svg";
 import ClearIcon from "../icons/clear.svg";
 import EditIcon from "../icons/edit.svg";
 import EyeIcon from "../icons/eye.svg";
 import EyeOffIcon from "../icons/eye-off.svg";
-
 import { List, ListItem, Popover, showToast } from "./ui-lib";
-
 import { IconButton } from "./button";
 import {
   SubmitKey,
@@ -24,7 +19,6 @@ import {
   ModalConfigValidator,
 } from "../store";
 import { Avatar } from "./chat";
-
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
 import { getEmojiUrl } from "../utils";
 import Link from "next/link";
@@ -33,7 +27,6 @@ import { SearchService, usePromptStore } from "../store/prompt";
 import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
-
 function SettingItem(props: {
   title: string;
   subTitle?: string;
@@ -51,14 +44,11 @@ function SettingItem(props: {
     </ListItem>
   );
 }
-
 function PasswordInput(props: HTMLProps<HTMLInputElement>) {
   const [visible, setVisible] = useState(false);
-
   function changeVisibility() {
     setVisible(!visible);
   }
-
   return (
     <div className={styles["password-input-container"]}>
       <IconButton
@@ -74,7 +64,6 @@ function PasswordInput(props: HTMLProps<HTMLInputElement>) {
     </div>
   );
 }
-
 export function Settings(props: { closeSettings: () => void }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [config, updateConfig, resetConfig, clearAllData, clearSessions] =
@@ -85,13 +74,11 @@ export function Settings(props: { closeSettings: () => void }) {
       state.clearAllData,
       state.clearSessions,
     ]);
-
   const updateStore = useUpdateStore();
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const currentVersion = updateStore.version;
   const remoteId = updateStore.remoteVersion;
   const hasNewVersion = currentVersion !== remoteId;
-
   function checkUpdate(force = false) {
     return; // disable update
     setCheckingUpdate(true);
@@ -99,7 +86,6 @@ export function Settings(props: { closeSettings: () => void }) {
       setCheckingUpdate(false);
     });
   }
-
   const [usage, setUsage] = useState<{
     used?: number;
     subscription?: number;
@@ -114,25 +100,21 @@ export function Settings(props: { closeSettings: () => void }) {
         setLoadingUsage(false);
       });
   }
-
   const accessStore = useAccessStore();
   const enabledAccessControl = useMemo(
     () => accessStore.enabledAccessControl(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
-
   const promptStore = usePromptStore();
   const builtinCount = SearchService.count.builtin;
   const customCount = promptStore.prompts.size ?? 0;
-
   const showUsage = accessStore.isAuthorized();
   useEffect(() => {
     checkUpdate();
     showUsage && checkUsage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -145,7 +127,6 @@ export function Settings(props: { closeSettings: () => void }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <ErrorBoundary>
       <div className={styles["window-header"]}>
@@ -224,9 +205,34 @@ export function Settings(props: { closeSettings: () => void }) {
               </div>
             </Popover>
           </SettingItem>
+/*
+          <SettingItem
+            title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
+            subTitle={
+              checkingUpdate
+                ? Locale.Settings.Update.IsChecking
+                : hasNewVersion
+                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
+                : Locale.Settings.Update.IsLatest
+            }
+          >
+            {checkingUpdate ? (
+              <div />
+            ) : hasNewVersion ? (
+              <Link href={UPDATE_URL} target="_blank" className="link">
+                {Locale.Settings.Update.GoToUpdate}
+              </Link>
+            ) : (
+              <IconButton
+                icon={<ResetIcon></ResetIcon>}
+                text={Locale.Settings.Update.CheckUpdate}
+                onClick={() => checkUpdate(true)}
+              />
+            )}
+          </SettingItem>
+*/
 
 
-  
           <SettingItem title={Locale.Settings.SendKey}>
             <select
               value={config.submitKey}
@@ -244,7 +250,6 @@ export function Settings(props: { closeSettings: () => void }) {
               ))}
             </select>
           </SettingItem>
-
           <ListItem>
             <div className={styles["settings-title"]}>
               {Locale.Settings.Theme}
@@ -264,7 +269,6 @@ export function Settings(props: { closeSettings: () => void }) {
               ))}
             </select>
           </ListItem>
-
           <SettingItem title={Locale.Settings.Lang.Name}>
             <select
               value={getLang()}
@@ -279,7 +283,6 @@ export function Settings(props: { closeSettings: () => void }) {
               ))}
             </select>
           </SettingItem>
-
           <SettingItem
             title={Locale.Settings.FontSize.Title}
             subTitle={Locale.Settings.FontSize.SubTitle}
@@ -298,7 +301,6 @@ export function Settings(props: { closeSettings: () => void }) {
               }
             ></InputRange>
           </SettingItem>
-
           <SettingItem title={Locale.Settings.TightBorder}>
             <input
               type="checkbox"
@@ -310,7 +312,6 @@ export function Settings(props: { closeSettings: () => void }) {
               }
             ></input>
           </SettingItem>
-
           <SettingItem title={Locale.Settings.SendPreviewBubble}>
             <input
               type="checkbox"
@@ -324,7 +325,6 @@ export function Settings(props: { closeSettings: () => void }) {
             ></input>
           </SettingItem>
         </List>
-
         <List>
           {enabledAccessControl ? (
             <SettingItem
@@ -343,7 +343,6 @@ export function Settings(props: { closeSettings: () => void }) {
           ) : (
             <></>
           )}
-
           <SettingItem
             title={Locale.Settings.Token.Title}
             subTitle={Locale.Settings.Token.SubTitle}
@@ -357,8 +356,32 @@ export function Settings(props: { closeSettings: () => void }) {
               }}
             />
           </SettingItem>
-          
 
+/*    
+          <SettingItem
+            title={Locale.Settings.Usage.Title}
+            subTitle={
+              showUsage
+                ? loadingUsage
+                  ? Locale.Settings.Usage.IsChecking
+                  : Locale.Settings.Usage.SubTitle(
+                      usage?.used ?? "[?]",
+                      usage?.subscription ?? "[?]",
+                    )
+                : Locale.Settings.Usage.NoAccess
+            }
+          >
+            {!showUsage || loadingUsage ? (
+              <div />
+            ) : (
+              <IconButton
+                icon={<ResetIcon></ResetIcon>}
+                text={Locale.Settings.Usage.Check}
+                onClick={checkUsage}
+              />
+            )}
+          </SettingItem>
+*/
 
 
           <SettingItem
@@ -379,7 +402,6 @@ export function Settings(props: { closeSettings: () => void }) {
               }
             ></InputRange>
           </SettingItem>
-
           <SettingItem
             title={Locale.Settings.CompressThreshold.Title}
             subTitle={Locale.Settings.CompressThreshold.SubTitle}
@@ -399,7 +421,6 @@ export function Settings(props: { closeSettings: () => void }) {
             ></input>
           </SettingItem>
         </List>
-
         <List>
           <SettingItem
             title={Locale.Settings.Prompt.Disable.Title}
@@ -416,7 +437,6 @@ export function Settings(props: { closeSettings: () => void }) {
               }
             ></input>
           </SettingItem>
-
           <SettingItem
             title={Locale.Settings.Prompt.List}
             subTitle={Locale.Settings.Prompt.ListCount(
@@ -431,7 +451,6 @@ export function Settings(props: { closeSettings: () => void }) {
             />
           </SettingItem>
         </List>
-
         <List>
           <SettingItem title={Locale.Settings.Model}>
             <select
