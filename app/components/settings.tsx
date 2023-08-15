@@ -93,6 +93,7 @@ export function Settings(props: { closeSettings: () => void }) {
   const hasNewVersion = currentVersion !== remoteId;
 
   function checkUpdate(force = false) {
+    return; // disable update
     setCheckingUpdate(true);
     updateStore.getLatestVersion(force).then(() => {
       setCheckingUpdate(false);
@@ -105,6 +106,7 @@ export function Settings(props: { closeSettings: () => void }) {
   }>();
   const [loadingUsage, setLoadingUsage] = useState(false);
   function checkUsage() {
+    return; // disable balance query
     setLoadingUsage(true);
     requestUsage()
       .then((res) => setUsage(res))
