@@ -1,4 +1,4 @@
-mport { useState, useEffect, useMemo, HTMLProps } from "react";
+import { useState, useEffect, useMemo, HTMLProps } from "react";
 import EmojiPicker, { Theme as EmojiTheme } from "emoji-picker-react";
 import styles from "./settings.module.scss";
 import ResetIcon from "../icons/reload.svg";
