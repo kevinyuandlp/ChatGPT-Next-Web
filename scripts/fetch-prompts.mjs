@@ -3,6 +3,7 @@ import fs from "fs/promises";
 
 const RAW_FILE_URL = "https://raw.githubusercontent.com/";
 //const MIRRORF_FILE_URL = "https://raw.fgit.ml/";
+//is this going to happen?
 const MIRRORF_FILE_URL = RAW_FILE_URL;
 
 const RAW_CN_URL = "PlexPt/awesome-chatgpt-prompts-zh/main/prompts-zh.json";
