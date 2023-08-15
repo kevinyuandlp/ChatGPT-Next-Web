@@ -224,7 +224,7 @@ export function Settings(props: { closeSettings: () => void }) {
               </div>
             </Popover>
           </SettingItem>
-{!accessStore.hideBalanceQuery ? (
+
           <SettingItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             subTitle={
@@ -249,8 +249,7 @@ export function Settings(props: { closeSettings: () => void }) {
               />
             )}
           </SettingItem>
-  ) : null}
-
+  
           <SettingItem title={Locale.Settings.SendKey}>
             <select
               value={config.submitKey}
@@ -382,7 +381,6 @@ export function Settings(props: { closeSettings: () => void }) {
             />
           </SettingItem>
           
-   {!accessStore.hideBalanceQuery ? (       
           <SettingItem
             title={Locale.Settings.Usage.Title}
             subTitle={
@@ -406,7 +404,7 @@ export function Settings(props: { closeSettings: () => void }) {
               />
             )}
           </SettingItem>
-      ) : null}
+
 
           <SettingItem
             title={Locale.Settings.HistoryCount.Title}
